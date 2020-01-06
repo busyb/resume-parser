@@ -15,6 +15,7 @@ public class FileStorageHelper {
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
     }
 
+
     public Path getFilePath(String key, String basePath) {
         String uniqueDirectory = parseKeyForDirectory(key);
         Path fileStorageLocation = Paths.get(basePath + uniqueDirectory)

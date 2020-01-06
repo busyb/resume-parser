@@ -61,10 +61,6 @@ public class FileStorageService {
         return fileName;
     }
 
-    
-
-    
-
     public Resource loadFileAsResource(String fileName, String key) throws Exception {
         try {
             Path filePath = helper.getFilePath(key, this.properties.getUploadDir()).resolve(fileName).normalize();
