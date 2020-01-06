@@ -3,6 +3,7 @@ package com.test.resume.parser.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.resume.parser.config.FileStorageProperties;
 import com.test.resume.parser.model.MLResult;
+import com.test.resume.parser.util.FileStorageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,16 +25,17 @@ public class FileStorageService {
 
 //    private final Path fileStorageLocation;
     private FileStorageProperties properties;
+    private FileStorageHelper helper;
 
     @Autowired
-    public FileStorageService(FileStorageProperties properties) throws Exception {
+    public FileStorageService(FileStorageProperties properties, FileStorageHelper helper) {
         this.properties = properties;
+        this.helper = helper;
     }
 
     public String storeFile(MultipartFile file, String key) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        getFilePath(key);
 
         try {
             // Check if the file's name contains invalid characters
@@ -46,11 +48,9 @@ public class FileStorageService {
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = getFilePath(key, properties.getUploadDir()).resolve(fileName);
-            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
-
-
+            String uploadDir = properties.getUploadDir();
+            Path targetLocation = helper.getFilePath(key, uploadDir).resolve(fileName);
+            helper.saveFileOnDisk(file, targetLocation);
         } catch (IOException ex) {
             try {
                 throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
@@ -61,31 +61,13 @@ public class FileStorageService {
         return fileName;
     }
 
-    private Path getFilePath(String key, String basePath) {
-        String uniqueDirectory = parseKeyForDirectory(key);
-        Path fileStorageLocation = Paths.get(basePath + uniqueDirectory)
-                .toAbsolutePath().normalize();
+    
 
-        try {
-            Files.createDirectories(fileStorageLocation);
-        } catch (Exception ex) {
-            try {
-                throw new Exception("Could not create the directory where the uploaded files will be stored.", ex);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return fileStorageLocation;
-    }
-
-    private String parseKeyForDirectory(String key) {
-        String directory = key.split(",")[0];
-        return "/" +  directory + "/";
-    }
+    
 
     public Resource loadFileAsResource(String fileName, String key) throws Exception {
         try {
-            Path filePath = getFilePath(key, this.properties.getUploadDir()).resolve(fileName).normalize();
+            Path filePath = helper.getFilePath(key, this.properties.getUploadDir()).resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
@@ -109,7 +91,7 @@ public class FileStorageService {
 
     public MLResult getMachineLearningResultsFromFile(String timestamp) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String filePath = getFilePath(timestamp + ",val", this.properties.getOutputDir()).toString() + "/output.json";
+        String filePath = helper.getFilePath(timestamp + ",val", this.properties.getOutputDir()).toString() + "/output.json";
         File src = new File(filePath);
         return mapper.readValue(src, MLResult.class);
     }
