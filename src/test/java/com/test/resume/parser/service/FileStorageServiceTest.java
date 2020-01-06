@@ -2,6 +2,7 @@ package com.test.resume.parser.service;
 
 import com.test.resume.parser.config.FileStorageProperties;
 import com.test.resume.parser.util.FileStorageHelper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,14 +19,16 @@ class FileStorageServiceTest {
     private FileStorageProperties properties;
     private FileStorageHelper helper;
 
-
-    @Test
-    void storeFile() throws IOException {
-        // general setup
+    @BeforeEach
+    void setup() {
         properties = mock(FileStorageProperties.class);
         helper = mock(FileStorageHelper.class);
         service = new FileStorageService(properties, helper);
+    }
 
+
+    @Test
+    void storeFile() throws IOException {
         // method setup
         MultipartFile testFile = new MockMultipartFile("test","test file", "", (byte[]) null);
         String testKey = "test Key";
