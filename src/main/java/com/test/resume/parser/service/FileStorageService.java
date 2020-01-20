@@ -10,27 +10,27 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
 @Service
 public class FileStorageService {
 
 
-//    private final Path fileStorageLocation;
+    //private final Path fileStorageLocation;
     private FileStorageProperties properties;
     private FileStorageHelper helper;
+
+    // base Path for upload file and do other operations, directions src/main dir in project space.
+    private String basePath;
 
     @Autowired
     public FileStorageService(FileStorageProperties properties, FileStorageHelper helper) {
         this.properties = properties;
         this.helper = helper;
+        this.basePath = System.getProperty("user.dir") + "/src/main";
     }
 
     public String storeFile(MultipartFile file, String key) {
@@ -48,9 +48,12 @@ public class FileStorageService {
             }
 
             // Copy file to the target location (Replacing existing file with the same name)
-            String uploadDir = properties.getUploadDir();
+            String uploadDir = basePath + properties.getUploadDir();
             Path targetLocation = helper.getFilePath(key, uploadDir).resolve(fileName);
+
             helper.saveFileOnDisk(file, targetLocation);
+
+
         } catch (IOException ex) {
             try {
                 throw new Exception("Could not store file " + fileName + ". Please try again!", ex);
@@ -63,7 +66,7 @@ public class FileStorageService {
 
     public Resource loadFileAsResource(String fileName, String key) throws Exception {
         try {
-            Path filePath = helper.getFilePath(key, this.properties.getUploadDir()).resolve(fileName).normalize();
+            Path filePath = helper.getFilePath(key, (basePath + this.properties.getUploadDir())).resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
             if(resource.exists()) {
                 return resource;
@@ -87,7 +90,7 @@ public class FileStorageService {
 
     public MLResult getMachineLearningResultsFromFile(String timestamp) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        String filePath = helper.getFilePath(timestamp + ",val", this.properties.getOutputDir()).toString() + "/output.json";
+        String filePath = helper.getFilePath(timestamp + ",val", basePath + this.properties.getOutputDir()).toString() + "/output.json";
         File src = new File(filePath);
         return mapper.readValue(src, MLResult.class);
     }
