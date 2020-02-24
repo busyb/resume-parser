@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.nio.file.Path;
 
 import static org.mockito.Mockito.*;
@@ -26,13 +25,11 @@ class FileStorageServiceTest {
         service = new FileStorageService(properties, helper);
     }
 
-
     @Test
-    void storeFile() throws IOException {
+    void storeFile() throws Exception {
         // method setup
-        MultipartFile testFile = new MockMultipartFile("test","test file", "", (byte[]) null);
         String testKey = "test Key";
-
+        MultipartFile testFile = new MockMultipartFile("test","test file", "", (byte[]) null);
         when(properties.getUploadDir()).thenReturn("/basePath");
         when(helper.getFilePath(any(), any())).thenReturn(mock(Path.class));
         doNothing().when(helper).saveFileOnDisk(any(), (any()));
