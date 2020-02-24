@@ -15,5 +15,4 @@ public class HackTestApplication {
 		SpringApplication.run(HackTestApplication.class, args);
 		System.out.println("Hello Java");
 	}
-
 }
