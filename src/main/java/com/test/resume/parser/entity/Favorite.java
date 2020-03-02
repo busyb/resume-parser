@@ -1,11 +1,9 @@
 package com.test.resume.parser.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "favorite")
 public class Favorite {
 
     @Id
@@ -14,6 +12,10 @@ public class Favorite {
 
     @Column(name = "status")
     int status;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "favorite")
+    private Resume resume;
 
     public long getFavoriteId() {
         return favoriteId;
@@ -29,5 +31,13 @@ public class Favorite {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public Resume getResume() {
+        return resume;
+    }
+
+    public void setResume(Resume resume) {
+        this.resume = resume;
     }
 }
