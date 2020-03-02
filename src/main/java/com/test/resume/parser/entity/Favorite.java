@@ -10,16 +10,16 @@ public class Favorite {
 
     @Id
     @GeneratedValue
-    int favoriteId;
+    long favoriteId;
 
     @Column(name = "status")
     int status;
 
-    public int getFavoriteId() {
+    public long getFavoriteId() {
         return favoriteId;
     }
 
-    public void setFavoriteId(int favoriteId) {
+    public void setFavoriteId(long favoriteId) {
         this.favoriteId = favoriteId;
     }
 

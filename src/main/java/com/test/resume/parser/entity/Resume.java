@@ -9,7 +9,7 @@ public class Resume {
 
     @Id
     @GeneratedValue
-    int resumeId;
+    long resumeId;
 
     @Column(name="resume_name")
     String resumeName;
@@ -37,11 +37,11 @@ public class Resume {
     @Column(name = "favorite_status")
     int favoriteStatus;
 
-    public int getResumeId() {
+    public long getResumeId() {
         return resumeId;
     }
 
-    public void setResumeId(int resumeId) {
+    public void setResumeId(long resumeId) {
         this.resumeId = resumeId;
     }
 

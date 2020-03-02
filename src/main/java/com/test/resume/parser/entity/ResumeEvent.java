@@ -7,7 +7,7 @@ public class ResumeEvent {
 
     @Id
     @GeneratedValue
-    int eventId;
+    long eventId;
 
     @Column(name = "event_name")
     String eventName;
@@ -19,11 +19,11 @@ public class ResumeEvent {
     @Column(name = "event_create_at")
     String eventCreateDate;
 
-    public int getEventId() {
+    public long getEventId() {
         return eventId;
     }
 
-    public void setEventId(int eventId) {
+    public void setEventId(long eventId) {
         this.eventId = eventId;
     }
 
