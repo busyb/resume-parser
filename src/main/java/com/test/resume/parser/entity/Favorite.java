@@ -1,7 +1,18 @@
 package com.test.resume.parser.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Favorite {
+
+    @Id
+    @GeneratedValue
     int favoriteId;
+
+    @Column(name = "status")
     int status;
 
     public int getFavoriteId() {

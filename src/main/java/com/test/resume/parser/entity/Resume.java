@@ -1,23 +1,41 @@
 package com.test.resume.parser.entity;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
+@Table(name="resume")
 public class Resume {
+
+    @Id
+    @GeneratedValue
     int resumeId;
 
+    @Column(name="resume_name")
     String resumeName;
 
+    @Lob
+    @Column(name="resume_file")
     byte[] resumeFile;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "resume_create_at")
     Date resumeCreateAt;
 
+    @Column(name = "resume_is_delete")
     int resumeIsDelete;
 
+    @Column(name = "resume_is_match")
     int resumeIsMatch;
 
+    @Column(name = "favorite_id")
     int resumeFavoId;
 
+    @Column(name = "resume_event_id")
     int resumeEventId;
+
+    @Column(name = "favorite_status")
+    int favoriteStatus;
 
     public int getResumeId() {
         return resumeId;
@@ -81,5 +99,13 @@ public class Resume {
 
     public void setResumeEventId(int resumeEventId) {
         this.resumeEventId = resumeEventId;
+    }
+
+    public int getFavoriteStatus() {
+        return favoriteStatus;
+    }
+
+    public void setFavoriteStatus(int favoriteStatus) {
+        this.favoriteStatus = favoriteStatus;
     }
 }

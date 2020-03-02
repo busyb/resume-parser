@@ -1,8 +1,22 @@
 package com.test.resume.parser.entity;
 
+import javax.persistence.*;
+import java.util.List;
+
 public class ResumeEvent {
+
+    @Id
+    @GeneratedValue
     int eventId;
+
+    @Column(name = "event_name")
     String eventName;
+
+    @OneToMany( targetEntity=Resume.class )
+    private List resumeList;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "event_create_at")
     String eventCreateDate;
 
     public int getEventId() {
@@ -27,5 +41,13 @@ public class ResumeEvent {
 
     public void setEventCreateDate(String eventCreateDate) {
         this.eventCreateDate = eventCreateDate;
+    }
+
+    public List getResumeList() {
+        return resumeList;
+    }
+
+    public void setResumeList(List resumeList) {
+        this.resumeList = resumeList;
     }
 }
