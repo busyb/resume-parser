@@ -1,6 +1,5 @@
 package com.test.resume.parser.repository;
 
-import com.test.resume.parser.entity.Favorite;
 import com.test.resume.parser.entity.Resume;
 import com.test.resume.parser.entity.ResumeEvent;
 import org.junit.jupiter.api.Test;
@@ -45,18 +44,12 @@ class ResumeRepositoryTest {
         event.setEventName("new event");
         event.setEventCreateDate(new Date());
 
-        // init favorite object
-        Favorite favorite = new Favorite();
-        favorite.setStatus(0);
-
         // init resume object
         Resume resume = new Resume();
         resume.setResumeName("sdfsf");
         resume.setResumeFile(new byte[]{1,2,3,4});
         resume.setEvent(event);
-        resume.setFavorite(favorite);
-
-//        favorite.setResume(resume);
+        resume.setFavorite(true);
 
         List<Resume> l = new ArrayList<>();
         l.add(resume);
@@ -66,6 +59,7 @@ class ResumeRepositoryTest {
         List<ResumeEvent> allEvents = resumeEventRepository.findAll();
 
         assertEquals(1, allEvents.size());
+        assertTrue(allEvents.get(0).getResumeList().get(0).isFavorite());
 
     }
 

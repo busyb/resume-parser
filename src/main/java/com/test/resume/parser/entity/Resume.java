@@ -33,10 +33,8 @@ public class Resume {
     @JoinColumn(name = "eventId")
     private ResumeEvent event;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "resume")
-    private Favorite favorite;
+    @Column(name = "resume_is_favorite")
+    private boolean isFavorite;
 
     public long getResumeId() {
         return resumeId;
@@ -94,11 +92,11 @@ public class Resume {
         this.event = event;
     }
 
-    public Favorite getFavorite() {
-        return favorite;
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
-    public void setFavorite(Favorite favorite) {
-        this.favorite = favorite;
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
