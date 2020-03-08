@@ -28,14 +28,13 @@ public class Resume {
     @Column(name = "resume_is_match")
     int resumeIsMatch;
 
-    @Column(name = "favorite_id")
-    int resumeFavoId;
 
-    @Column(name = "resume_event_id")
-    int resumeEventId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "eventId")
+    private ResumeEvent event;
 
-    @Column(name = "favorite_status")
-    int favoriteStatus;
+    @Column(name = "resume_is_favorite")
+    private boolean isFavorite;
 
     public long getResumeId() {
         return resumeId;
@@ -85,27 +84,19 @@ public class Resume {
         this.resumeIsMatch = resumeIsMatch;
     }
 
-    public int getResumeFavoId() {
-        return resumeFavoId;
+    public ResumeEvent getEvent() {
+        return event;
     }
 
-    public void setResumeFavoId(int resumeFavoId) {
-        this.resumeFavoId = resumeFavoId;
+    public void setEvent(ResumeEvent event) {
+        this.event = event;
     }
 
-    public int getResumeEventId() {
-        return resumeEventId;
+    public boolean isFavorite() {
+        return isFavorite;
     }
 
-    public void setResumeEventId(int resumeEventId) {
-        this.resumeEventId = resumeEventId;
-    }
-
-    public int getFavoriteStatus() {
-        return favoriteStatus;
-    }
-
-    public void setFavoriteStatus(int favoriteStatus) {
-        this.favoriteStatus = favoriteStatus;
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }
