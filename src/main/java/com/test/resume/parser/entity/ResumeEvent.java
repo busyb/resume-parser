@@ -1,11 +1,8 @@
 package com.test.resume.parser.entity;
 
 import javax.persistence.*;
-<<<<<<< Updated upstream
-=======
 import java.util.ArrayList;
 import java.util.Date;
->>>>>>> Stashed changes
 import java.util.List;
 
 public class ResumeEvent {
@@ -22,7 +19,7 @@ public class ResumeEvent {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_create_at")
-    String eventCreateDate;
+    Date eventCreateDate;
 
     public ResumeEvent() {
         this.resumeList = new ArrayList<>();
@@ -45,20 +42,12 @@ public class ResumeEvent {
         this.eventName = eventName;
     }
 
-    public String getEventCreateDate() {
+    public Date getEventCreateDate() {
         return eventCreateDate;
     }
 
-    public void setEventCreateDate(String eventCreateDate) {
+    public void setEventCreateDate(Date eventCreateDate) {
         this.eventCreateDate = eventCreateDate;
-    }
-
-    public List getResumeList() {
-        return resumeList;
-    }
-
-    public void setResumeList(List resumeList) {
-        this.resumeList = resumeList;
     }
 
     public void addResume(Resume resume) {
