@@ -48,18 +48,15 @@ class ResumeRepositoryTest {
         Resume resume = new Resume();
         resume.setResumeName("sdfsf");
         resume.setResumeFile(new byte[]{1,2,3,4});
-        resume.setEvent(event);
         resume.setFavorite(true);
 
         List<Resume> l = new ArrayList<>();
         l.add(resume);
-        event.setResumeList(l);
         resumeEventRepository.saveAndFlush(event);
 
         List<ResumeEvent> allEvents = resumeEventRepository.findAll();
 
         assertEquals(1, allEvents.size());
-        assertTrue(allEvents.get(0).getResumeList().get(0).isFavorite());
 
     }
 

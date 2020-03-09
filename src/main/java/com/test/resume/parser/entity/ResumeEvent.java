@@ -1,6 +1,7 @@
 package com.test.resume.parser.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,11 @@ public class ResumeEvent {
     @Column(name = "event_create_at")
     Date eventCreateDate;
 
+    public ResumeEvent() {
+        this.resumeList = new ArrayList<>();
+        this.eventCreateDate = new Date();
+    }
+
     public long getEventId() {
         return eventId;
     }
@@ -38,19 +44,15 @@ public class ResumeEvent {
         this.eventName = eventName;
     }
 
-    public List<Resume> getResumeList() {
-        return resumeList;
-    }
-
-    public void setResumeList(List<Resume> resumeList) {
-        this.resumeList = resumeList;
-    }
-
     public Date getEventCreateDate() {
         return eventCreateDate;
     }
 
     public void setEventCreateDate(Date eventCreateDate) {
         this.eventCreateDate = eventCreateDate;
+    }
+
+    public void addResume(Resume resume) {
+        resumeList.add(resume);
     }
 }

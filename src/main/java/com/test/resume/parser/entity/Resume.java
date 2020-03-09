@@ -28,13 +28,9 @@ public class Resume {
     @Column(name = "resume_is_match")
     int resumeIsMatch;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "eventId")
-    private ResumeEvent event;
-
     @Column(name = "resume_is_favorite")
     private boolean isFavorite;
+
 
     public long getResumeId() {
         return resumeId;
@@ -82,14 +78,6 @@ public class Resume {
 
     public void setResumeIsMatch(int resumeIsMatch) {
         this.resumeIsMatch = resumeIsMatch;
-    }
-
-    public ResumeEvent getEvent() {
-        return event;
-    }
-
-    public void setEvent(ResumeEvent event) {
-        this.event = event;
     }
 
     public boolean isFavorite() {

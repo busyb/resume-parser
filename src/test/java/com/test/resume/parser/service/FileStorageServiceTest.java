@@ -1,6 +1,8 @@
 package com.test.resume.parser.service;
 
 import com.test.resume.parser.config.FileStorageProperties;
+import com.test.resume.parser.entity.ResumeEvent;
+import com.test.resume.parser.repository.ResumeEventRepository;
 import com.test.resume.parser.repository.TestRepository;
 import com.test.resume.parser.util.FileStorageHelper;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,35 +20,27 @@ class FileStorageServiceTest {
     private FileStorageService service;
     private FileStorageProperties properties;
     private FileStorageHelper helper;
-    private TestRepository testRepository;
+    private ResumeEventRepository resumeEventRepository;
 
     @BeforeEach
     void setup() {
         properties = mock(FileStorageProperties.class);
         helper = mock(FileStorageHelper.class);
-        testRepository = mock(TestRepository.class);
-        service = new FileStorageService(properties, helper, testRepository);
+        resumeEventRepository = mock(ResumeEventRepository.class);
+        service = new FileStorageService(properties, helper, resumeEventRepository);
     }
 
     @Test
     void storeFile() throws Exception {
         // method setup
-        String testKey = "test Key";
         MultipartFile testFile = new MockMultipartFile("test", "test file", "", (byte[]) null);
-        when(properties.getUploadDir()).thenReturn("/basePath");
-        when(helper.getFilePath(any(), any())).thenReturn(mock(Path.class));
-        doNothing().when(helper).saveFileOnDisk(any(), (any()));
+        ResumeEvent event = new ResumeEvent();
+        event.setEventId(123123);
+        when(resumeEventRepository.saveAndFlush(any())).thenReturn(event);
 
-        String response = service.storeFile(testFile, testKey);
+        String response = service.storeFile(testFile);
 
-        assertEquals("testing file name", "test file", response);
-    }
-
-    @Test
-    void testDBconnection() {
-        service.saveTestObject();
-        verify(testRepository, times(1))
-                .saveAndFlush(any(com.test.resume.parser.model.Test.class));
+        assertEquals("testing file name", "123123", response);
     }
 
 }

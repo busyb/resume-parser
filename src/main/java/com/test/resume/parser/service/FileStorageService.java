@@ -2,15 +2,16 @@ package com.test.resume.parser.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.resume.parser.config.FileStorageProperties;
+import com.test.resume.parser.entity.Resume;
+import com.test.resume.parser.entity.ResumeEvent;
 import com.test.resume.parser.model.MLResult;
 import com.test.resume.parser.model.Test;
-import com.test.resume.parser.repository.TestRepository;
+import com.test.resume.parser.repository.ResumeEventRepository;
 import com.test.resume.parser.util.FileStorageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -24,30 +25,44 @@ import java.util.UUID;
 public class FileStorageService {
     private FileStorageProperties properties;
     private FileStorageHelper helper;
-    private TestRepository testRepository;
+    private ResumeEventRepository resumeEventRepository;
     private String basePath;
 
     @Autowired
-    public FileStorageService(FileStorageProperties properties, FileStorageHelper helper, TestRepository testRepository) {
+    public FileStorageService(FileStorageProperties properties, FileStorageHelper helper, ResumeEventRepository resumeEventRepository) {
         this.properties = properties;
         this.helper = helper;
-        this.testRepository = testRepository;
+        this.resumeEventRepository = resumeEventRepository;
         this.basePath = System.getProperty("user.dir") + "/src/main";
     }
 
-    public String storeFile(MultipartFile file, String key) throws Exception {
+    public String storeFile(MultipartFile file) throws Exception {
         // Normalize file name
         String originalFilename = getOriginalFilename(file);
-        String fileName = StringUtils.cleanPath(originalFilename);
-        // Check if the file's name contains invalid characters
-        if (fileName.contains("..")) {
-            throw new Exception("Sorry! Filename contains invalid path sequence " + fileName);
-        }
-        // Copy file to the target location (Replacing existing file with the same name)
-        Path targetLocation = constructTargetPath(key, fileName);
-        helper.saveFileOnDisk(file, targetLocation);
+        ResumeEvent event = createNewEventWithResume(file, originalFilename);
+        ResumeEvent savedEvent = resumeEventRepository.saveAndFlush(event);
 
-        return fileName;
+        return String.valueOf(savedEvent.getEventId());
+    }
+
+    private ResumeEvent createNewEventWithResume(MultipartFile file, String originalFilename) throws IOException {
+        Resume resume = createNewResume(file, originalFilename);
+
+        // create a new resume event object
+        ResumeEvent event = new ResumeEvent();
+        event.setEventName("new event");
+        event.addResume(resume);
+
+        return event;
+    }
+
+    private Resume createNewResume(MultipartFile file, String originalFilename) throws IOException {
+        // create a new resume, and set resume to event
+        Resume resume = new Resume();
+        resume.setResumeName(originalFilename);
+        resume.setResumeFile(file.getBytes());
+        resume.setFavorite(true);
+        return resume;
     }
 
     private String getOriginalFilename(MultipartFile file) throws Exception {
@@ -102,6 +117,5 @@ public class FileStorageService {
         Test test = new Test();
         test.setUsername(UUID.randomUUID().toString());
         test.setPassword(UUID.randomUUID().toString());
-        testRepository.saveAndFlush(test);
     }
 }
