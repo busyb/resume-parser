@@ -30,4 +30,33 @@ class ResumeRepositoryTest {
         assertEquals(1, all.size());
     }
 
+<<<<<<< Updated upstream
+=======
+    @Test
+    public void testCreateNewResumeEvent() {
+
+        // init resume event object
+        ResumeEvent event = new ResumeEvent();
+        event.setEventName("new event");
+        event.setEventCreateDate(new Date());
+
+        // init resume object
+        Resume resume = new Resume();
+        resume.setResumeName("sdfsf");
+        resume.setResumeFile(new byte[]{1,2,3,4});
+        resume.setFavorite(true);
+
+        List<Resume> l = new ArrayList<>();
+        l.add(resume);
+        event.setResumeList(l);
+        resumeEventRepository.saveAndFlush(event);
+
+        List<ResumeEvent> allEvents = resumeEventRepository.findAll();
+
+        assertEquals(1, allEvents.size());
+        assertTrue(allEvents.get(0).getResumeList().get(0).isFavorite());
+
+    }
+
+>>>>>>> Stashed changes
 }

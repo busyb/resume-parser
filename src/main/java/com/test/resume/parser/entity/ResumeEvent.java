@@ -1,6 +1,11 @@
 package com.test.resume.parser.entity;
 
 import javax.persistence.*;
+<<<<<<< Updated upstream
+=======
+import java.util.ArrayList;
+import java.util.Date;
+>>>>>>> Stashed changes
 import java.util.List;
 
 public class ResumeEvent {
@@ -18,6 +23,11 @@ public class ResumeEvent {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_create_at")
     String eventCreateDate;
+
+    public ResumeEvent() {
+        this.resumeList = new ArrayList<>();
+        this.eventCreateDate = new Date();
+    }
 
     public long getEventId() {
         return eventId;
@@ -49,5 +59,9 @@ public class ResumeEvent {
 
     public void setResumeList(List resumeList) {
         this.resumeList = resumeList;
+    }
+
+    public void addResume(Resume resume) {
+        resumeList.add(resume);
     }
 }

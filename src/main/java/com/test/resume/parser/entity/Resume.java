@@ -28,6 +28,7 @@ public class Resume {
     @Column(name = "resume_is_match")
     int resumeIsMatch;
 
+<<<<<<< Updated upstream
     @Column(name = "favorite_id")
     int resumeFavoId;
 
@@ -36,6 +37,10 @@ public class Resume {
 
     @Column(name = "favorite_status")
     int favoriteStatus;
+=======
+    @Column(name = "resume_is_favorite")
+    private boolean isFavorite;
+>>>>>>> Stashed changes
 
     public long getResumeId() {
         return resumeId;
@@ -85,6 +90,7 @@ public class Resume {
         this.resumeIsMatch = resumeIsMatch;
     }
 
+<<<<<<< Updated upstream
     public int getResumeFavoId() {
         return resumeFavoId;
     }
@@ -95,6 +101,10 @@ public class Resume {
 
     public int getResumeEventId() {
         return resumeEventId;
+=======
+    public boolean isFavorite() {
+        return isFavorite;
+>>>>>>> Stashed changes
     }
 
     public void setResumeEventId(int resumeEventId) {

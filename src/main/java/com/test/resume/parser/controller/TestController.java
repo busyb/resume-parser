@@ -39,7 +39,7 @@ public class TestController {
 
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("key") String key, @RequestParam(defaultValue = "", required = false) String fromSingleRequest) throws Exception {
-        String fileName = fileStorageService.storeFile(file, key);
+        String fileName = fileStorageService.storeFile(file);
         String fileDownloadUri = getFileLocationUri(key, fileName);
 
         if (fromSingleRequest.isEmpty()) {
