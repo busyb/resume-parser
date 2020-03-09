@@ -1,12 +1,15 @@
 package com.test.resume.parser.repository;
 
 import com.test.resume.parser.entity.Resume;
+import com.test.resume.parser.entity.ResumeEvent;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +20,9 @@ class ResumeRepositoryTest {
 
     @Autowired
     private ResumeRepository resumeRepository;
+
+    @Autowired
+    private ResumeEventRepository resumeEventRepository;
 
     @Test
     public void testResumeEntity() {
@@ -30,8 +36,6 @@ class ResumeRepositoryTest {
         assertEquals(1, all.size());
     }
 
-<<<<<<< Updated upstream
-=======
     @Test
     public void testCreateNewResumeEvent() {
 
@@ -48,15 +52,12 @@ class ResumeRepositoryTest {
 
         List<Resume> l = new ArrayList<>();
         l.add(resume);
-        event.setResumeList(l);
         resumeEventRepository.saveAndFlush(event);
 
         List<ResumeEvent> allEvents = resumeEventRepository.findAll();
 
         assertEquals(1, allEvents.size());
-        assertTrue(allEvents.get(0).getResumeList().get(0).isFavorite());
 
     }
 
->>>>>>> Stashed changes
 }
