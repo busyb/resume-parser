@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@Table(name="resume_event")
 public class ResumeEvent {
 
     @Id
@@ -14,8 +16,8 @@ public class ResumeEvent {
     @Column(name = "event_name")
     String eventName;
 
-    @OneToMany( targetEntity=Resume.class )
-    private List resumeList;
+    @OneToMany( targetEntity=Resume.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    private List<Resume> resumeList;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_create_at")
