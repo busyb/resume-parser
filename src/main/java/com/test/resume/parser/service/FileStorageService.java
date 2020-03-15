@@ -83,25 +83,25 @@ public class FileStorageService {
     public Resource loadFileAsResource(String fileName, Long eventId, Long resumeId) throws Exception {
 
 
-            Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
+        Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
 
-            ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
+        ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
 
-            Resume resume = resumeEvent.getResumeList()
-                    .stream()
-                    .filter(res -> resumeId == res.getResumeId())
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException(String.format("Resume with id: s% does not exist", resumeId)));
+        Resume resume = resumeEvent.getResumeList()
+                .stream()
+                .filter(res -> resumeId == res.getResumeId())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(String.format("Resume with id: s% does not exist", resumeId)));
 
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(resume.getResumeFile());
+        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(resume.getResumeFile());
 
-            InputStreamResource inputStreamResource = new InputStreamResource(byteArrayInputStream);
+        InputStreamResource inputStreamResource = new InputStreamResource(byteArrayInputStream);
 
-            if (inputStreamResource.exists()) {
-                return inputStreamResource;
-            } else {
-                throw new Exception("File not found " + fileName);
-            }
+        if (inputStreamResource.exists()) {
+            return inputStreamResource;
+        } else {
+            throw new Exception("File not found " + fileName);
+        }
     }
 
     private URI generateURI(String fileName, String key) {
