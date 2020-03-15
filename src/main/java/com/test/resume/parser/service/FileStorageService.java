@@ -9,16 +9,20 @@ import com.test.resume.parser.model.Test;
 import com.test.resume.parser.repository.ResumeEventRepository;
 import com.test.resume.parser.util.FileStorageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -76,18 +80,28 @@ public class FileStorageService {
         return filePath.resolve(fileName);
     }
 
-    public Resource loadFileAsResource(String fileName, String key) throws Exception {
-        try {
-            URI uri = generateURI(fileName, key);
-            Resource resource = new UrlResource(uri);
-            if (resource.exists()) {
-                return resource;
+    public Resource loadFileAsResource(String fileName, Long eventId, Long resumeId) throws Exception {
+
+
+            Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
+
+            ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
+
+            Resume resume = resumeEvent.getResumeList()
+                    .stream()
+                    .filter(res -> resumeId == res.getResumeId())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException(String.format("Resume with id: s% does not exist", resumeId)));
+
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(resume.getResumeFile());
+
+            InputStreamResource inputStreamResource = new InputStreamResource(byteArrayInputStream);
+
+            if (inputStreamResource.exists()) {
+                return inputStreamResource;
             } else {
                 throw new Exception("File not found " + fileName);
             }
-        } catch (MalformedURLException ex) {
-            throw new Exception("File not found " + fileName, ex);
-        }
     }
 
     private URI generateURI(String fileName, String key) {

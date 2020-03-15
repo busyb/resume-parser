@@ -55,4 +55,8 @@ public class ResumeEvent {
     public void addResume(Resume resume) {
         resumeList.add(resume);
     }
+
+    public List<Resume> getResumeList() {
+        return resumeList;
+    }
 }

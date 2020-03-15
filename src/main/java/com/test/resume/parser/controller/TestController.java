@@ -96,6 +96,8 @@ public class TestController {
         if (contentType == null) {
             return "application/octet-stream";
         }
+
+
         return contentType;
     }
 
