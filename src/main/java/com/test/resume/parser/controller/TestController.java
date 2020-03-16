@@ -79,8 +79,8 @@ public class TestController {
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request, @RequestParam("key") String key) throws Exception {
-        Resource resource = fileStorageService.loadFileAsResource(fileName, key);
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request, @RequestParam("key") String key, @RequestParam("key") String eventId) throws Exception {
+        Resource resource = fileStorageService.loadFileAsResource(fileName, Long.parseLong(key), Long.parseLong(eventId));
         String contentType = null;
         try {
             contentType = getContentType(request, resource);

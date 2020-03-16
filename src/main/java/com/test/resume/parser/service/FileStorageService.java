@@ -5,6 +5,7 @@ import com.test.resume.parser.config.FileStorageProperties;
 import com.test.resume.parser.entity.Resume;
 import com.test.resume.parser.entity.ResumeEvent;
 import com.test.resume.parser.model.MLResult;
+import com.test.resume.parser.model.ResumeInfo;
 import com.test.resume.parser.model.Test;
 import com.test.resume.parser.repository.ResumeEventRepository;
 import com.test.resume.parser.util.FileStorageHelper;
@@ -22,8 +23,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class FileStorageService {
@@ -80,9 +83,21 @@ public class FileStorageService {
         return filePath.resolve(fileName);
     }
 
+    public List<ResumeInfo> fetchResumeInformation(Long eventId){
+        Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
+
+        ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
+
+        List<ResumeInfo> resumeInfoList = resumeEvent.getResumeList()
+                .stream()
+                .map(resume -> new ResumeInfo(String.valueOf(resume.getResumeId()), resume.getResumeName()))
+                .collect(Collectors.toList());
+
+
+        return resumeInfoList;
+    }
+
     public Resource loadFileAsResource(String fileName, Long eventId, Long resumeId) throws Exception {
-
-
             Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
 
             ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
