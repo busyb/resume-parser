@@ -1,16 +1,15 @@
 package com.test.resume.parser.service;
 
+import com.test.resume.parser.FileStorageService;
 import com.test.resume.parser.config.FileStorageProperties;
 import com.test.resume.parser.entity.ResumeEvent;
 import com.test.resume.parser.repository.ResumeEventRepository;
-import com.test.resume.parser.repository.TestRepository;
 import com.test.resume.parser.util.FileStorageHelper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.util.AssertionErrors.assertEquals;

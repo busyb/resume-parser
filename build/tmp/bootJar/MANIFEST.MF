@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Start-Class: com.test.hackTest.HackTestApplication
+Start-Class: com.test.resume.parser.HackTestApplication
 Spring-Boot-Classes: BOOT-INF/classes/
 Spring-Boot-Lib: BOOT-INF/lib/
 Spring-Boot-Version: 2.2.1.RELEASE

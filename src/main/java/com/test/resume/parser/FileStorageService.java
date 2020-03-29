@@ -1,4 +1,4 @@
-package com.test.resume.parser.service;
+package com.test.resume.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.resume.parser.config.FileStorageProperties;

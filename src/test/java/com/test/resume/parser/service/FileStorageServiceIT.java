@@ -1,21 +1,22 @@
-package com.test.resume.parser.repository;
+package com.test.resume.parser.service;
 
 
-import com.test.resume.parser.entity.Resume;
+import com.test.resume.parser.FileStorageService;
 import com.test.resume.parser.model.ResumeInfo;
-import com.test.resume.parser.service.FileStorageService;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.SpringVersion;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class FileStorageServiceIT {
 
@@ -23,7 +24,7 @@ public class FileStorageServiceIT {
     private FileStorageService fileStorageService;
 
     @Test
-    private void testResumeResource() throws Exception {
+    public void testResumeResource() throws Exception {
 
         MultipartFile testFile = new MockMultipartFile("test", "test file", "", new byte[]{1,2,3,4});
 
