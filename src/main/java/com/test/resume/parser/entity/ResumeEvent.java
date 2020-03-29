@@ -1,6 +1,8 @@
 package com.test.resume.parser.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 public class ResumeEvent {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long eventId;
 
     @Column(name = "event_name")
@@ -21,11 +23,11 @@ public class ResumeEvent {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_create_at")
-    Date eventCreateDate;
+    Timestamp eventCreateDate;
 
     public ResumeEvent() {
         this.resumeList = new ArrayList<>();
-        this.eventCreateDate = new Date();
+        this.eventCreateDate = new Timestamp(Instant.now().toEpochMilli());
     }
 
     public long getEventId() {
@@ -48,7 +50,7 @@ public class ResumeEvent {
         return eventCreateDate;
     }
 
-    public void setEventCreateDate(Date eventCreateDate) {
+    public void setEventCreateDate(Timestamp eventCreateDate) {
         this.eventCreateDate = eventCreateDate;
     }
 
