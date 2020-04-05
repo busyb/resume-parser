@@ -13,17 +13,17 @@ public class ResumeEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long eventId;
+    private long eventId;
 
     @Column(name = "event_name")
-    String eventName;
+    private String eventName;
 
-    @OneToMany( targetEntity=Resume.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    @OneToMany( targetEntity=Resume.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     private List<Resume> resumeList;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "event_create_at")
-    Timestamp eventCreateDate;
+    Date eventCreateDate;
 
     public ResumeEvent() {
         this.resumeList = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ResumeEvent {
         return eventCreateDate;
     }
 
-    public void setEventCreateDate(Timestamp eventCreateDate) {
+    public void setEventCreateDate(Date eventCreateDate) {
         this.eventCreateDate = eventCreateDate;
     }
 

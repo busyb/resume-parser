@@ -3,7 +3,6 @@ package com.test.resume.parser.service;
 
 import com.test.resume.parser.FileStorageService;
 import com.test.resume.parser.HackTestApplication;
-import com.test.resume.parser.entity.ResumeEvent;
 import com.test.resume.parser.model.ResumeInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.boot.test.context.SpringBootTest.*;
+import static org.junit.Assert.assertTrue;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @SpringBootTest( webEnvironment = WebEnvironment.MOCK,
@@ -33,12 +31,10 @@ public class FileStorageServiceIT {
     void storeFile() throws Exception {
         // method setup
         MultipartFile testFile = new MockMultipartFile("test", "test file", "", (byte[]) null);
-        ResumeEvent event = new ResumeEvent();
-        event.setEventId(123123);
 
         String response = fileStorageService.storeFile(testFile);
 
-        assertEquals("testing file name", "123123", response);
+        assertEquals("testing file name", "1", response);
     }
 
 
@@ -59,4 +55,17 @@ public class FileStorageServiceIT {
 //
 //
 //    }
+
+    @Test
+    public void testFetchResumeInformation() {
+        List<ResumeInfo> response  = fileStorageService.fetchResumeInformation(10001L);
+        assertEquals("should be 1 record for now", 1, response.size());
+    }
+
+    @Test
+    public void testLoadFileAsResource() throws Exception{
+        Resource res = fileStorageService.loadFileAsResource("hahahaha", 10001L, 666L);
+        assertNotNull(res);
+        assertTrue(res.contentLength() > 0L);
+    }
 }
