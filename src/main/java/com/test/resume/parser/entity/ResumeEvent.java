@@ -1,6 +1,8 @@
 package com.test.resume.parser.entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,13 +12,13 @@ import java.util.List;
 public class ResumeEvent {
 
     @Id
-    @GeneratedValue
-    long eventId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long eventId;
 
     @Column(name = "event_name")
-    String eventName;
+    private String eventName;
 
-    @OneToMany( targetEntity=Resume.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL )
+    @OneToMany( targetEntity=Resume.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL )
     private List<Resume> resumeList;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -25,7 +27,7 @@ public class ResumeEvent {
 
     public ResumeEvent() {
         this.resumeList = new ArrayList<>();
-        this.eventCreateDate = new Date();
+        this.eventCreateDate = new Timestamp(Instant.now().toEpochMilli());
     }
 
     public long getEventId() {

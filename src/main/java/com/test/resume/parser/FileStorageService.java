@@ -1,4 +1,4 @@
-package com.test.resume.parser.service;
+package com.test.resume.parser;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.resume.parser.config.FileStorageProperties;
@@ -10,17 +10,13 @@ import com.test.resume.parser.model.Test;
 import com.test.resume.parser.repository.ResumeEventRepository;
 import com.test.resume.parser.util.FileStorageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Path;
 import java.util.List;
@@ -98,25 +94,23 @@ public class FileStorageService {
     }
 
     public Resource loadFileAsResource(String fileName, Long eventId, Long resumeId) throws Exception {
-            Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
+        Optional<ResumeEvent> optionalResumeEvent = resumeEventRepository.findById(eventId);
 
-            ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
+        ResumeEvent resumeEvent = optionalResumeEvent.orElseThrow(() -> new IllegalStateException(String.format("Resume event with id: s% does not exist", eventId)));
 
-            Resume resume = resumeEvent.getResumeList()
-                    .stream()
-                    .filter(res -> resumeId == res.getResumeId())
-                    .findFirst()
-                    .orElseThrow(() -> new IllegalStateException(String.format("Resume with id: s% does not exist", resumeId)));
+        Resume resume = resumeEvent.getResumeList()
+                .stream()
+                .filter(res -> resumeId == res.getResumeId())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException(String.format("Resume with id: s% does not exist", resumeId)));
 
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(resume.getResumeFile());
+        ByteArrayResource responseResource = new ByteArrayResource(resume.getResumeFile());
 
-            InputStreamResource inputStreamResource = new InputStreamResource(byteArrayInputStream);
-
-            if (inputStreamResource.exists()) {
-                return inputStreamResource;
-            } else {
-                throw new Exception("File not found " + fileName);
-            }
+        if (responseResource.exists()) {
+            return responseResource;
+        } else {
+            throw new Exception("File not found " + fileName);
+        }
     }
 
     private URI generateURI(String fileName, String key) {
