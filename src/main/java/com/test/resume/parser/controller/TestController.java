@@ -2,7 +2,7 @@ package com.test.resume.parser.controller;
 
 import com.test.resume.parser.model.MLResult;
 import com.test.resume.parser.model.UploadFileResponse;
-import com.test.resume.parser.service.FileStorageService;
+import com.test.resume.parser.FileStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -15,9 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/")
@@ -79,8 +77,8 @@ public class TestController {
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request, @RequestParam("key") String key) throws Exception {
-        Resource resource = fileStorageService.loadFileAsResource(fileName, key);
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request, @RequestParam("key") String key, @RequestParam("key") String eventId) throws Exception {
+        Resource resource = fileStorageService.loadFileAsResource(fileName, Long.parseLong(key), Long.parseLong(eventId));
         String contentType = null;
         try {
             contentType = getContentType(request, resource);
@@ -96,6 +94,8 @@ public class TestController {
         if (contentType == null) {
             return "application/octet-stream";
         }
+
+
         return contentType;
     }
 

@@ -20,12 +20,12 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 
 	implementation 'junit:junit:4.12'
 
 	testCompile group: 'com.h2database', name: 'h2', version: '1.4.199'
+    implementation 'org.testng:testng:6.9.6'
 }
 
 test {
