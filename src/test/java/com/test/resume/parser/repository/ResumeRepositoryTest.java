@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +43,7 @@ class ResumeRepositoryTest {
         // init resume event object
         ResumeEvent event = new ResumeEvent();
         event.setEventName("new event");
-        event.setEventCreateDate(new Date());
+        event.setEventCreateDate(new Timestamp(System.currentTimeMillis()));
 
         // init resume object
         Resume resume = new Resume();
