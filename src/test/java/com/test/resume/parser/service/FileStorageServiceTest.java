@@ -12,6 +12,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class FileStorageServiceTest {
@@ -39,7 +41,8 @@ class FileStorageServiceTest {
 
         String response = service.storeFile(testFile);
 
-        StringUtils.isNotBlank(response);
+        assertNotNull(response);
+        assertEquals("1", response);
     }
 
 }
